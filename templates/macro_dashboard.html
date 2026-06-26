@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏛️ Institutional Macro Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e4e4e4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .bias-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .bias-title {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+        
+        .bias-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .bias-score {
+            font-size: 1.5rem;
+            color: #888;
+        }
+        
+        .bullish { color: #00ff88; }
+        .neutral { color: #ffd700; }
+        .bearish { color: #ff4757; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+        
+        .card-title {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .card-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .card-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .status-green { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .status-yellow { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
+        .status-red { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5rem;
+            color: #888;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+        
+        .last-update {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .live-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏛️ Institutional Macro Dashboard</h1>
+            <p class="subtitle">Live Federal Reserve Economic Data + Market Sentiment</p>
+            <button class="refresh-btn" onclick="fetchMacroData()">🔄 Refresh Data</button>
+        </header>
+        
+        <div id="dashboard">
+            <div class="loading">📊 Loading macro data...</div>
+        </div>
+        
+        <p class="last-update" id="lastUpdate"></p>
+    </div>
+    
+    <script>
+        async function fetchMacroData() {
+            const dashboard = document.getElementById('dashboard');
+            dashboard.innerHTML = '<div class="loading">📊 Fetching live data...</div>';
+            
+            try {
+                const response = await fetch('/api/macro');
+                const data = await response.json();
+                
+                if (data.error) {
+                    dashboard.innerHTML = `<div class="loading">❌ Error: ${data.error}</div>`;
+                    return;
+                }
+                
+                renderDashboard(data);
+                
+                const now = new Date().toLocaleString();
+                document.getElementById('lastUpdate').innerHTML = `Last updated: ${now}`;
+            } catch (error) {
+                dashboard.innerHTML = `<div class="loading">❌ Failed to fetch data: ${error.message}</div>`;
+            }
+        }
+        
+        function renderDashboard(data) {
+            const biasClass = data.trading_bias.toLowerCase();
+            
+            let html = `
+                <!-- Trading Bias Card -->
+                <div class="bias-card">
+                    <div class="bias-title">🎯 TRADING BIAS</div>
+                    <div class="bias-value ${biasClass}">${data.trading_bias}</div>
+                    <div class="bias-score">Macro Score: ${data.macro_score}</div>
+                </div>
+                
+                <!-- DXY Highlight -->
+                <div class="section-title">🇺🇸 Dollar Index (DXY)</div>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-title">🇺🇸 DXY (UUP ETF)</div>
+                        <div class="card-value">$${data.dxy.value ? data.dxy.value.toFixed(2) : 'N/A'}</div>
+                        <div class="card-date">📅 ${data.dxy.date || 'N/A'}</div>
+                        <div class="card-status status-${getDollarStatusClass(data.analysis.dollar_status)}">
+                            ${data.analysis.dollar_status}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Yields & Curves -->
+                <div class="section-title">📈 Yields & Yield Curve</div>
+                <div class="grid">
+                    ${renderCard(data.fred_data['10Y Treasury Yield'], '📈 10Y Treasury', '%')}
+                    ${renderCard(data.fred_data['2Y Treasury Yield'], '📉 2Y Treasury', '%')}
+                    ${renderCard(data.fred_data['Real Yields (TIPS)'], '💎 Real Yields (TIPS)', '%', data.analysis.real_yields_status)}
+                    ${renderCard(data.fred_data['Yield Curve (10Y-2Y)'], '📊 Yield Curve', '%')}
+                </div>
+                
+                <!-- Fed & Liquidity -->
+                <div class="section-title">💧 Fed & Liquidity</div>
+                <div class="grid">
+                    ${renderCard(data.fred_data['Fed Funds Rate'], '🏦 Fed Funds', '%', data.analysis.fed_stance)}
+                    ${renderCard(data.fred_data['Fed Balance Sheet'], '🏛️ Fed Balance', 'T')}
+                    ${renderCard(data.fred_data['M2 Money Supply'], '💵 M2 Supply', 'T', data.analysis.liquidity_status)}
+                    ${renderCard(data.fred_data['Reverse Repo (RRP)'], '📦 RRP', 'B')}
+                </div>
+                
+                <!-- Inflation & Markets -->
+                <div class="section-title">🏷️ Inflation & Markets</div>
+                <div class="grid">
+                    ${renderCard(data.fred_data['CPI'], '🏷️ CPI', 'index')}
+                    ${renderCard(data.fred_data['VIX'], '😰 VIX', '', getVixStatus(data.fred_data['VIX']?.value))}
+                </div>
+                
+                <!-- Labor Market -->
+                <div class="section-title">👷 Labor Market</div>
+                <div class="grid">
+                    ${renderCard(data.fred_data['Non-Farm Payrolls'], '👷 NFP', 'K')}
+                    ${renderCard(data.fred_data['Unemployment Rate'], '😰 Unemployment', '%')}
+                </div>
+            `;
+            
+            document.getElementById('dashboard').innerHTML = html;
+        }
+        
+        function renderCard(data, title, unit, status = null) {
+            if (!data) {
+                return `
+                    <div class="card">
+                        <div class="card-title">${title}</div>
+                        <div class="card-value" style="color: #666;">N/A</div>
+                        <div class="card-date">Data unavailable</div>
+                    </div>
+                `;
+            }
+            
+            let value = data.value;
+            let formattedValue;
+            
+            if (unit === 'T') {
+                if (data.code === 'WALCL') {
+                    formattedValue = `$${(value / 1000000).toFixed(2)}T`;
+                } else if (data.code === 'M2SL') {
+                    formattedValue = `$${(value / 1000).toFixed(2)}T`;
+                } else {
+                    formattedValue = `$${(value / 1000).toFixed(1)}B`;
+                }
+            } else if (unit === 'B') {
+                formattedValue = `$${(value / 1000).toFixed(1)}B`;
+            } else if (unit === 'K') {
+                formattedValue = `${(value / 1000).toFixed(1)}K`;
+            } else if (unit === '%') {
+                formattedValue = `${value.toFixed(2)}%`;
+            } else if (unit === 'index') {
+                formattedValue = value.toFixed(1);
+            } else {
+                formattedValue = value.toFixed(2);
+            }
+            
+            let statusHtml = '';
+            if (status) {
+                const statusClass = getStatusClass(status);
+                statusHtml = `<div class="card-status status-${statusClass}">${status}</div>`;
+            }
+            
+            return `
+                <div class="card">
+                    <div class="card-title">${title}</div>
+                    <div class="card-value">${formattedValue}</div>
+                    <div class="card-date">📅 ${data.date}</div>
+                    ${statusHtml}
+                </div>
+            `;
+        }
+        
+        function getDollarStatus(status) {
+            if (status === 'STRONG') return 'status-yellow';
+            if (status === 'WEAK') return 'status-green';
+            return 'status-yellow';
+        }
+        
+        function getDollarStatusClass(status) {
+            if (status === 'STRONG') return 'yellow';
+            if (status === 'WEAK') return 'green';
+            return 'yellow';
+        }
+        
+        function getStatusClass(status) {
+            const s = status.toUpperCase();
+            if (s.includes('HIGH') || s.includes('STRONG') || s.includes('HAWKISH') || s.includes('TIGHT')) return 'red';
+            if (s.includes('LOW') || s.includes('WEAK') || s.includes('DOVISH') || s.includes('SUPPORTIVE')) return 'green';
+            return 'yellow';
+        }
+        
+        function getVixStatus(value) {
+            if (!value) return null;
+            if (value > 25) return 'ELEVATED';
+            if (value < 15) return 'COMPLACENT';
+            return 'NORMAL';
+        }
+        
+        // Auto-refresh every 60 seconds
+        setInterval(fetchMacroData, 60000);
+        
+        // Initial load
+        fetchMacroData();
+    </script>
+</body>
+</html>
