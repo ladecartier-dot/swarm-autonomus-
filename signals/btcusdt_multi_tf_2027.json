@@ -1,0 +1,50 @@
+{
+  "symbol": "BTCUSDT",
+  "setup_type": "MULTI_TIMEFRAME_SWING_2027",
+  "timestamp": "2026-06-26T09:25:00Z",
+  "current_price": 60136,
+  "timeframes": {
+    "monthly": {"bias": "BULLISH", "key_level": "Above major support, discount zone"},
+    "weekly": {"bias": "BULLISH", "key_level": "At strong low $58,441"},
+    "daily": {"bias": "BULLISH", "key_level": "Discount zone, near PWL/PDL"}
+  },
+  "confluence": "STRONGEST",
+  "confluence_score": 9.5,
+  
+  "entry": {
+    "phase_1": {"zone": [58500, 60500], "allocation": 0.40, "status": "ACTIVE"},
+    "phase_2": {"zone": [52500, 55000], "allocation": 0.35, "status": "PENDING"},
+    "phase_3": {"zone": [68000, 72000], "allocation": 0.25, "status": "PENDING"}
+  },
+  
+  "stop_loss": 46500,
+  "invalidation": "Weekly close below $46,500",
+  
+  "take_profit": [
+    {"level": 74982, "percent": 0.20, "gain": 0.24, "timeline": "Q4 2026"},
+    {"level": 86000, "percent": 0.20, "gain": 0.43, "timeline": "Q4 2026"},
+    {"level": 98339, "percent": 0.20, "gain": 0.64, "timeline": "Q1 2027"},
+    {"level": 112328, "percent": 0.20, "gain": 0.87, "timeline": "Q2 2027"},
+    {"level": 134389, "percent": 0.15, "gain": 1.24, "timeline": "Q2 2027"},
+    {"level": 175000, "percent": 0.10, "gain": 2.00, "timeline": "Q3 2027"},
+    {"level": 260000, "percent": 0.05, "gain": 3.40, "timeline": "Q4 2027"}
+  ],
+  
+  "risk_reward": {"tp5": 5.4, "tp7": 15.0, "tp8": 27.0},
+  "expected_return": 1.54,
+  "confidence": 0.85,
+  "horizon": "12-24 months",
+  
+  "key_levels": {
+    "resistance": [260000, 175000, 134389, 112328, 98339, 86000, 74982, 66500],
+    "support": [58441, 55000, 52500, 46500]
+  },
+  
+  "stockbit_target": {
+    "current_realized": 514459818,
+    "target_addition": 2000000000,
+    "currency": "IDR"
+  },
+  
+  "notes": "All 3 timeframes aligned (1M, 1W, 1D). Strongest confluence setup. Target +Rp2-3B to existing +Rp514M track record."
+}
