@@ -1,0 +1,44 @@
+{
+  "symbol": "BTCUSDT",
+  "setup_type": "SWING_LONG_2027",
+  "timestamp": "2026-06-26T09:20:00Z",
+  "current_price": 60129,
+  "bias": "BULLISH",
+  "horizon": "12-18 months",
+  "target_date": "Q4 2027",
+  
+  "entry": {
+    "phase_1": {"zone": [58500, 60500], "allocation": 0.40, "status": "ACTIVE"},
+    "phase_2": {"zone": [52500, 55000], "allocation": 0.35, "status": "PENDING"},
+    "phase_3": {"zone": [68000, 72000], "allocation": 0.25, "status": "PENDING"}
+  },
+  
+  "stop_loss": 46500,
+  "invalidation": "Weekly close below $46,500",
+  
+  "take_profit": [
+    {"level": 86000, "percent": 0.20, "gain": 0.43, "timeline": "Q4 2026"},
+    {"level": 98339, "percent": 0.30, "gain": 0.64, "timeline": "Q1 2027"},
+    {"level": 112328, "percent": 0.30, "gain": 0.87, "timeline": "Q2 2027"},
+    {"level": 134389, "percent": 0.15, "gain": 1.24, "timeline": "Q2 2027"},
+    {"level": 175000, "percent": 0.05, "gain": 2.00, "timeline": "Q3-Q4 2027"}
+  ],
+  
+  "risk_reward": 8.7,
+  "expected_return": 0.95,
+  "confidence": 0.85,
+  
+  "key_levels": {
+    "resistance": [175000, 134389, 112328, 98339, 86000, 74982, 66500],
+    "support": [58441, 55000, 52500, 46500]
+  },
+  
+  "monitoring": {
+    "frequency": "weekly",
+    "macro_check": "monthly",
+    "rebalance": "quarterly"
+  },
+  
+  "mindset": "12-18 month hold, ignore short-term volatility",
+  "notes": "Accumulate in discount zone, hold to 2027 cycle peak"
+}
