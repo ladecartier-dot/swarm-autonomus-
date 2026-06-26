@@ -1,0 +1,50 @@
+# Swarm Trader - Automated Daily Data Fetching
+# Generated: 2026-06-26 02:07:02
+# Project: /mnt/data/hermes/workspace/swarm-trader
+
+# ============================================
+# DAILY DATA FETCHING
+# ============================================
+
+# Fetch daily market data at 00:05 UTC (after daily candle close)
+5 0 * * * cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python data/daily_fetch.py >> logs/daily_data.log 2>&1
+
+# Fetch H4 data every 4 hours (at 00:05, 04:05, 08:05, etc.)
+5 */4 * * * cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python data/daily_fetch.py >> logs/daily_data.log 2>&1
+
+# ============================================
+# SIGNAL GENERATION
+# ============================================
+
+# Run swarm analysis every 4 hours (H4 candle close + 10 min)
+10 */4 * * * cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python signals/generate_signals.py --all >> logs/signals.log 2>&1
+
+# Deep daily analysis at 01:00 UTC
+0 1 * * * cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python main.py --run --symbol BTCUSD >> logs/daily_analysis.log 2>&1
+
+# ============================================
+# BACKTESTING
+# ============================================
+
+# Weekly backtest every Sunday at 02:00 UTC
+0 2 * * 0 cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python main.py --backtest >> logs/backtest.log 2>&1
+
+# ============================================
+# MAINTENANCE
+# ============================================
+
+# Clean old log files (keep last 7 days) - Daily at 03:00
+0 3 * * * find /mnt/data/hermes/workspace/swarm-trader/logs -name "*.log" -mtime +7 -delete
+
+# Clean old data files (keep last 30 days) - Weekly on Sunday
+0 3 * * 0 find /mnt/data/hermes/workspace/swarm-trader/data/historical -name "*.json" -mtime +30 -delete
+
+# ============================================
+# TELEGRAM DIGEST
+# ============================================
+
+# Morning digest at 08:00 UTC (if you add a digest script)
+# 0 8 * * * cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python utils/send_daily_digest.py >> logs/digest.log 2>&1
+
+# Evening digest at 20:00 UTC
+# 0 20 * * * cd /mnt/data/hermes/workspace/swarm-trader && /mnt/data/hermes/workspace/swarm-trader/venv/bin/python utils/send_daily_digest.py >> logs/digest.log 2>&1

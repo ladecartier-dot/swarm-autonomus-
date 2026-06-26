@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# State (keep DB, clear sensitive)
+state/*.db
+state/*.json
+!state/.gitkeep
+
+# Logs
+logs/*.log
+
+# OS
+.DS_Store
+Thumbs.db
