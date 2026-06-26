@@ -1,0 +1,58 @@
+{
+  "symbol": "BTCUSDT",
+  "timestamp": "2026-06-26T09:15:00Z",
+  "current_price": 60100,
+  "bias": "NEUTRAL",
+  "setup_type": "SMC_WAITING",
+  
+  "scenarios": {
+    "bullish": {
+      "active": false,
+      "trigger": "BSL sweep $58,000-$59,500 + CHoCH",
+      "entry": 59400,
+      "stop_loss": 57500,
+      "take_profit": [61200, 62800, 64500],
+      "risk_reward": 2.7,
+      "confidence": 0.75,
+      "position_size_pct": 0.62
+    },
+    "bearish": {
+      "active": false,
+      "trigger": "SSL sweep $61,200-$62,800 + CHoCH",
+      "entry": 62000,
+      "stop_loss": 64500,
+      "take_profit": [59500, 58000, 56200],
+      "risk_reward": 2.3,
+      "confidence": 0.65,
+      "position_size_pct": 0.50
+    }
+  },
+  
+  "key_levels": {
+    "resistance": [64500, 62800, 61200],
+    "support": [59500, 58000, 56200],
+    "current": 60100
+  },
+  
+  "order_blocks": {
+    "bullish": [[57800, 58500], [59200, 59600]],
+    "bearish": [[63500, 64200], [61800, 62200]]
+  },
+  
+  "fvg": {
+    "bullish": [[59200, 59500], [57500, 58000]],
+    "bearish": [[61500, 61800], [62800, 63200]]
+  },
+  
+  "action": "WAIT",
+  "alerts": [59500, 58000, 61200, 62800],
+  "checklist_required": [
+    "liquidity_sweep",
+    "displacement",
+    "choch",
+    "return_to_ob",
+    "entry_candle"
+  ],
+  
+  "notes": "Price in mid-range. Wait for BSL or SSL sweep before entry. Patience is key."
+}
